@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almacén Central · Panel de inventario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Botón de menú para móvil -->
+  <button id="menu-toggle" class="menu-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Abrir menú de navegación">
+    <span class="menu-toggle__bar" aria-hidden="true"></span>
+    <span class="menu-toggle__bar" aria-hidden="true"></span>
+    <span class="menu-toggle__bar" aria-hidden="true"></span>
+  </button>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar" role="navigation" aria-label="Navegación principal">
+      <div class="sidebar__brand">
+        <span class="sidebar__mark" aria-hidden="true">AC</span>
+        <span class="sidebar__name">Almacén Central</span>
+      </div>
+
+      <ul class="sidebar__list">
+        <li><a href="#resumen" class="sidebar__link sidebar__link--active" data-view="resumen">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Resumen</span>
+        </a></li>
+        <li><a href="#productos" class="sidebar__link" data-view="productos">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>
+          <span>Productos</span>
+        </a></li>
+        <li><a href="#movimientos" class="sidebar__link" data-view="movimientos">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg>
+          <span>Movimientos</span>
+        </a></li>
+        <li><a href="#reportes" class="sidebar__link" data-view="reportes">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-6 3 4 5-8"/></svg>
+          <span>Reportes</span>
+        </a></li>
+        <li><a href="#proveedores" class="sidebar__link" data-view="proveedores">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2"/><path d="M17 11a4 4 0 1 0-1.2-7.8"/><path d="M23 21v-2a5 5 0 0 0-3.5-4.8"/></svg>
+          <span>Proveedores</span>
+        </a></li>
+      </ul>
+
+      <div class="sidebar__footer">
+        <a href="#configuracion" class="sidebar__link" data-view="configuracion">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Configuración</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- HEADER -->
+    <header class="header">
+      <div>
+        <h1 class="header__title" id="header-title">Resumen de inventario</h1>
+        <p class="header__subtitle" id="header-subtitle">Miércoles, 20 de agosto — última sincronización hace 4 min</p>
+      </div>
+
+      <div class="header__actions">
+        <label class="search" for="search-input">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input id="search-input" type="search" placeholder="Buscar producto o SKU…">
+        </label>
+        <button class="btn btn--primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Nuevo producto
+        </button>
+        <button class="avatar" aria-label="Cuenta de Marcela Ríos">MR</button>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="main" role="main">
+
+    <!-- VISTA: RESUMEN -->
+    <div class="view" id="view-resumen" data-title="Resumen de inventario" data-subtitle="Miércoles, 20 de agosto — última sincronización hace 4 min">
+
+      <!-- Tarjetas de resumen -->
+      <section class="cards" aria-label="Indicadores clave">
+
+        <article class="card">
+          <div class="card__row">
+            <span class="card__label">Referencias activas</span>
+            <span class="card__icon card__icon--pine" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 7L9 18l-5-5"/></svg>
+            </span>
+          </div>
+          <p class="card__value">1,248</p>
+          <p class="card__trend card__trend--up">↑ 3.2% vs. mes anterior</p>
+        </article>
+
+        <article class="card">
+          <div class="card__row">
+            <span class="card__label">Stock bajo mínimo</span>
+            <span class="card__icon card__icon--amber" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+            </span>
+          </div>
+          <p class="card__value">27</p>
+          <p class="card__trend card__trend--down">↑ 6 nuevas alertas hoy</p>
+        </article>
+
+        <article class="card">
+          <div class="card__row">
+            <span class="card__label">Valor total en bodega</span>
+            <span class="card__icon card__icon--pine" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </span>
+          </div>
+          <p class="card__value">$182.4M</p>
+          <p class="card__trend card__trend--up">↑ 1.1% vs. mes anterior</p>
+        </article>
+
+        <article class="card">
+          <div class="card__row">
+            <span class="card__label">Órdenes de compra abiertas</span>
+            <span class="card__icon card__icon--pine" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2h6l1 4H8l1-4z"/><path d="M4 6h16l-1.5 14a2 2 0 0 1-2 2H7.5a2 2 0 0 1-2-2L4 6z"/></svg>
+            </span>
+          </div>
+          <p class="card__value">14</p>
+          <p class="card__trend">5 llegan esta semana</p>
+        </article>
+
+      </section>
+
+      <!-- Contenido en dos columnas: gráfico + tabla -->
+      <section class="content-grid">
+
+        <article class="panel panel--chart" aria-labelledby="chart-title">
+          <div class="panel__head">
+            <h2 id="chart-title" class="panel__title">Movimiento de salidas — últimos 7 días</h2>
+          </div>
+          <div class="chart" role="img" aria-label="Gráfico de barras de unidades despachadas por día, de lunes a domingo, con un máximo el jueves">
+            <div class="chart__bar" style="--h: 55%"><span>Lun</span></div>
+            <div class="chart__bar" style="--h: 68%"><span>Mar</span></div>
+            <div class="chart__bar" style="--h: 47%"><span>Mié</span></div>
+            <div class="chart__bar chart__bar--peak" style="--h: 92%"><span>Jue</span></div>
+            <div class="chart__bar" style="--h: 74%"><span>Vie</span></div>
+            <div class="chart__bar" style="--h: 30%"><span>Sáb</span></div>
+            <div class="chart__bar" style="--h: 18%"><span>Dom</span></div>
+          </div>
+        </article>
+
+        <article class="panel panel--alerts" aria-labelledby="alerts-title">
+          <div class="panel__head">
+            <h2 id="alerts-title" class="panel__title">Alertas prioritarias</h2>
+          </div>
+          <ul class="alert-list">
+            <li class="alert-item">
+              <span class="alert-item__dot" aria-hidden="true"></span>
+              <div>
+                <p class="alert-item__title">Tornillo hexagonal M6 (SKU 0231)</p>
+                <p class="alert-item__meta">Quedan 8 unidades — mínimo 50</p>
+              </div>
+            </li>
+            <li class="alert-item">
+              <span class="alert-item__dot" aria-hidden="true"></span>
+              <div>
+                <p class="alert-item__title">Guantes de nitrilo talla M (SKU 0119)</p>
+                <p class="alert-item__meta">Quedan 15 unidades — mínimo 40</p>
+              </div>
+            </li>
+            <li class="alert-item">
+              <span class="alert-item__dot" aria-hidden="true"></span>
+              <div>
+                <p class="alert-item__title">Cinta aislante 3M negra (SKU 0872)</p>
+                <p class="alert-item__meta">Quedan 22 unidades — mínimo 60</p>
+              </div>
+            </li>
+          </ul>
+        </article>
+
+      </section>
+
+      <!-- Tabla de productos -->
+      <section class="panel panel--table" aria-labelledby="table-title">
+        <div class="panel__head">
+          <h2 id="table-title" class="panel__title">Productos recientes</h2>
+          <div class="panel__filters">
+            <button class="chip chip--active">Todos</button>
+            <button class="chip">En stock</button>
+            <button class="chip">Bajo mínimo</button>
+            <button class="chip">Agotado</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Producto</th>
+                <th scope="col">SKU</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Existencias</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Última entrada</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Producto">Taladro percutor 650W</td>
+                <td data-label="SKU">0042</td>
+                <td data-label="Categoría">Herramientas</td>
+                <td data-label="Existencias">86</td>
+                <td data-label="Estado"><span class="status status--ok">En stock</span></td>
+                <td data-label="Última entrada">14 ago 2026</td>
+              </tr>
+              <tr>
+                <td data-label="Producto">Tornillo hexagonal M6</td>
+                <td data-label="SKU">0231</td>
+                <td data-label="Categoría">Ferretería</td>
+                <td data-label="Existencias">8</td>
+                <td data-label="Estado"><span class="status status--low">Bajo mínimo</span></td>
+                <td data-label="Última entrada">02 ago 2026</td>
+              </tr>
+              <tr>
+                <td data-label="Producto">Casco de seguridad blanco</td>
+                <td data-label="SKU">0587</td>
+                <td data-label="Categoría">Seguridad</td>
+                <td data-label="Existencias">0</td>
+                <td data-label="Estado"><span class="status status--out">Agotado</span></td>
+                <td data-label="Última entrada">28 jul 2026</td>
+              </tr>
+              <tr>
+                <td data-label="Producto">Cinta aislante 3M negra</td>
+                <td data-label="SKU">0872</td>
+                <td data-label="Categoría">Eléctrico</td>
+                <td data-label="Existencias">22</td>
+                <td data-label="Estado"><span class="status status--low">Bajo mínimo</span></td>
+                <td data-label="Última entrada">19 ago 2026</td>
+              </tr>
+              <tr>
+                <td data-label="Producto">Guantes de nitrilo talla M</td>
+                <td data-label="SKU">0119</td>
+                <td data-label="Categoría">Seguridad</td>
+                <td data-label="Existencias">15</td>
+                <td data-label="Estado"><span class="status status--low">Bajo mínimo</span></td>
+                <td data-label="Última entrada">10 ago 2026</td>
+              </tr>
+              <tr>
+                <td data-label="Producto">Manguera de jardín 15m</td>
+                <td data-label="SKU">0355</td>
+                <td data-label="Categoría">Hogar</td>
+                <td data-label="Existencias">64</td>
+                <td data-label="Estado"><span class="status status--ok">En stock</span></td>
+                <td data-label="Última entrada">17 ago 2026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+    <!-- FIN VISTA: RESUMEN -->
+
+    <!-- VISTA: PRODUCTOS -->
+    <div class="view" id="view-productos" data-title="Catálogo de productos" data-subtitle="1,248 referencias activas en 6 categorías" hidden>
+      <section class="cards" aria-label="Indicadores de productos">
+        <article class="card">
+          <div class="card__row"><span class="card__label">Total de referencias</span></div>
+          <p class="card__value">1,248</p>
+          <p class="card__trend">En 6 categorías</p>
+        </article>
+        <article class="card">
+          <div class="card__row"><span class="card__label">Categoría más grande</span></div>
+          <p class="card__value">Ferretería</p>
+          <p class="card__trend">412 referencias</p>
+        </article>
+        <article class="card">
+          <div class="card__row"><span class="card__label">Precio promedio</span></div>
+          <p class="card__value">$46,200</p>
+          <p class="card__trend">Por unidad</p>
+        </article>
+      </section>
+
+      <section class="panel panel--table" aria-labelledby="productos-title">
+        <div class="panel__head">
+          <h2 id="productos-title" class="panel__title">Todos los productos</h2>
+          <div class="panel__filters">
+            <button class="chip chip--active">Todos</button>
+            <button class="chip">Herramientas</button>
+            <button class="chip">Ferretería</button>
+            <button class="chip">Seguridad</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th scope="col">Producto</th><th scope="col">SKU</th><th scope="col">Categoría</th><th scope="col">Existencias</th><th scope="col">Precio unitario</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Taladro percutor 650W</td><td>0042</td><td>Herramientas</td><td>86</td><td>$189,900</td></tr>
+              <tr><td>Sierra circular 7 1/4"</td><td>0058</td><td>Herramientas</td><td>34</td><td>$245,000</td></tr>
+              <tr><td>Tornillo hexagonal M6</td><td>0231</td><td>Ferretería</td><td>8</td><td>$450</td></tr>
+              <tr><td>Bisagra reforzada 3"</td><td>0244</td><td>Ferretería</td><td>210</td><td>$3,200</td></tr>
+              <tr><td>Casco de seguridad blanco</td><td>0587</td><td>Seguridad</td><td>0</td><td>$28,500</td></tr>
+              <tr><td>Guantes de nitrilo talla M</td><td>0119</td><td>Seguridad</td><td>15</td><td>$6,800</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- VISTA: MOVIMIENTOS -->
+    <div class="view" id="view-movimientos" data-title="Movimientos de inventario" data-subtitle="Entradas y salidas registradas esta semana" hidden>
+      <section class="panel panel--table" aria-labelledby="movimientos-title">
+        <div class="panel__head">
+          <h2 id="movimientos-title" class="panel__title">Últimos movimientos</h2>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th scope="col">Fecha</th><th scope="col">Producto</th><th scope="col">Tipo</th><th scope="col">Cantidad</th><th scope="col">Responsable</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>20 ago 2026</td><td>Taladro percutor 650W</td><td><span class="status status--ok">Entrada</span></td><td>+20</td><td>Carlos Peña</td></tr>
+              <tr><td>19 ago 2026</td><td>Cinta aislante 3M negra</td><td><span class="status status--low">Salida</span></td><td>-15</td><td>Marcela Ríos</td></tr>
+              <tr><td>18 ago 2026</td><td>Casco de seguridad blanco</td><td><span class="status status--low">Salida</span></td><td>-6</td><td>Jorge Salas</td></tr>
+              <tr><td>17 ago 2026</td><td>Manguera de jardín 15m</td><td><span class="status status--ok">Entrada</span></td><td>+40</td><td>Carlos Peña</td></tr>
+              <tr><td>16 ago 2026</td><td>Tornillo hexagonal M6</td><td><span class="status status--low">Salida</span></td><td>-92</td><td>Marcela Ríos</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- VISTA: REPORTES -->
+    <div class="view" id="view-reportes" data-title="Reportes" data-subtitle="Indicadores generales del mes en curso" hidden>
+      <section class="cards" aria-label="Indicadores de reportes">
+        <article class="card">
+          <div class="card__row"><span class="card__label">Rotación mensual</span></div>
+          <p class="card__value">4.2x</p>
+          <p class="card__trend card__trend--up">↑ 0.3 vs. mes anterior</p>
+        </article>
+        <article class="card">
+          <div class="card__row"><span class="card__label">Costo de faltantes</span></div>
+          <p class="card__value">$3.1M</p>
+          <p class="card__trend card__trend--down">↑ 12% vs. mes anterior</p>
+        </article>
+        <article class="card">
+          <div class="card__row"><span class="card__label">Precisión de inventario</span></div>
+          <p class="card__value">97.4%</p>
+          <p class="card__trend card__trend--up">↑ 1.2 pts</p>
+        </article>
+      </section>
+      <article class="panel">
+        <div class="panel__head"><h2 class="panel__title">Salidas por categoría — este mes</h2></div>
+        <div class="chart" role="img" aria-label="Gráfico de barras de salidas por categoría, con ferretería como la más alta">
+          <div class="chart__bar" style="--h: 85%"><span>Ferret.</span></div>
+          <div class="chart__bar" style="--h: 60%"><span>Herram.</span></div>
+          <div class="chart__bar" style="--h: 40%"><span>Seguridad</span></div>
+          <div class="chart__bar" style="--h: 25%"><span>Eléctrico</span></div>
+          <div class="chart__bar" style="--h: 15%"><span>Hogar</span></div>
+        </div>
+      </article>
+    </div>
+
+    <!-- VISTA: PROVEEDORES -->
+    <div class="view" id="view-proveedores" data-title="Proveedores" data-subtitle="14 proveedores activos" hidden>
+      <section class="panel panel--table" aria-labelledby="proveedores-title">
+        <div class="panel__head"><h2 id="proveedores-title" class="panel__title">Directorio de proveedores</h2></div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th scope="col">Proveedor</th><th scope="col">Categoría</th><th scope="col">Contacto</th><th scope="col">Órdenes abiertas</th><th scope="col">Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Ferretería Andina S.A.S.</td><td>Ferretería</td><td>ventas@ferreteriaandina.co</td><td>5</td><td><span class="status status--ok">Activo</span></td></tr>
+              <tr><td>Herramientas del Valle</td><td>Herramientas</td><td>pedidos@hvalle.com</td><td>3</td><td><span class="status status--ok">Activo</span></td></tr>
+              <tr><td>Distribuidora 3M Colombia</td><td>Eléctrico</td><td>contacto@3mdist.co</td><td>2</td><td><span class="status status--ok">Activo</span></td></tr>
+              <tr><td>SegurIndustrial Ltda.</td><td>Seguridad</td><td>info@segurindustrial.com</td><td>4</td><td><span class="status status--low">Retrasado</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- VISTA: CONFIGURACIÓN -->
+    <div class="view" id="view-configuracion" data-title="Configuración" data-subtitle="Preferencias generales del sistema" hidden>
+      <article class="panel">
+        <div class="panel__head"><h2 class="panel__title">Preferencias de la cuenta</h2></div>
+        <p style="color: var(--ink-soft); font-size: 13.5px;">Aquí irían las opciones de perfil, notificaciones y permisos de usuario. Esta sección es un marcador de posición para fines de la actividad.</p>
+      </article>
+    </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>© 2026 Almacén Central — Sistema de gestión de inventario</p>
+      <p>Versión 1.0 · Soporte: soporte@almacencentral.co</p>
+    </footer>
+
+  </div>
+
+  <!-- Fondo oscuro al abrir el menú en móvil -->
+  <div class="overlay" id="overlay" hidden></div>
+
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function closeMenu() {
+      sidebar.classList.remove('sidebar--open');
+      overlay.hidden = true;
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = sidebar.classList.toggle('sidebar--open');
+      overlay.hidden = !isOpen;
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    overlay.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
+    });
+
+    // Navegación entre secciones
+    const navLinks = document.querySelectorAll('.sidebar__link[data-view]');
+    const views = document.querySelectorAll('.view');
+    const headerTitle = document.getElementById('header-title');
+    const headerSubtitle = document.getElementById('header-subtitle');
+    const main = document.querySelector('.main');
+
+    function showView(viewName) {
+      views.forEach((view) => {
+        view.hidden = view.id !== `view-${viewName}`;
+      });
+
+      const activeView = document.getElementById(`view-${viewName}`);
+      if (activeView) {
+        headerTitle.textContent = activeView.dataset.title;
+        headerSubtitle.textContent = activeView.dataset.subtitle;
+      }
+
+      navLinks.forEach((link) => {
+        link.classList.toggle('sidebar__link--active', link.dataset.view === viewName);
+      });
+
+      main.scrollTop = 0;
+      closeMenu();
+    }
+
+    navLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        showView(link.dataset.view);
+        history.replaceState(null, '', `#${link.dataset.view}`);
+      });
+    });
+
+    // Permite abrir directamente en una sección vía URL (#productos, etc.)
+    const initialView = window.location.hash.replace('#', '') || 'resumen';
+    if (document.getElementById(`view-${initialView}`)) {
+      showView(initialView);
+    }
+  </script>
+
+</body>
+</html>
